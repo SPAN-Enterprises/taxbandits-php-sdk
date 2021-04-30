@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Http;
 use \Firebase\JWT\JWT;
 
 class JWTController extends Controller
@@ -31,8 +31,14 @@ class JWTController extends Controller
         //create JWS 
         $jws = JWT::encode($payload, $jwtKey);
 
-        
-        return $jws;
+
+        $response= Http::withHeaders([
+           
+            'Authentication' => $jws
+         ])->get('https://testoauth.expressauth.net/v2/tbsauth');
+
+         error_log($response);
+        return $response['AccessToken'];
        
         
 

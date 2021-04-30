@@ -92,6 +92,29 @@ class BusinessController extends Controller
     );
     error_log($response);
 
-    return view('/success');
+    if ($response['StatusCode'] == 200)
+    {
+
+        $responseJson = "StatusMessage= " . $response['StatusMessage'] . "<br>BusinessId = " . $response['BusinessId'];
+
+        $ErrorMessage="Business Created Successfully";
+
+        $formtype="Businesses";
+
+        return view('success', ['response'=>$responseJson],['ErrorMessage'=>$ErrorMessage],['formtype'=>$formtype]);
     }
+
+    elseif ($response['Errors'] !=null)
+    {
+        
+        return view('error_list',  ['errorList'=>$response['Errors']] , ['status'=>$response['StatusCode'] . $response['StatusName'] . $response['StatusMessage']]);
+    }
+
+    else{
+
+        return view('success', ['response'=>$response='StatusMessage=' . response['StatusCode']],
+                               ['ErrorMessage'=>$ErrorMessage='Message=' . $response]);
+   
+    }
+}
 }

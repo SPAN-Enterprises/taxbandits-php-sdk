@@ -28,3 +28,9 @@ Route::get('/create_business', function () {
 });
 
 Route::post('/success','App\Http\Controllers\BusinessController@save_business');
+
+
+Route::get('/render_template_1099_misc_list','App\Http\Controllers\Form1099MiscController@get_all_business_list');
+
+Route::get('/form_1099_misc_list','App\Http\Controllers\Form1099MiscController@get_all_form_1099_misc_list_by_business_id');
+

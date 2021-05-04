@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
-class Business 
+
+class Business extends Model
 {
 
     private $BusinessNm;
@@ -154,5 +155,9 @@ class Business
 
     public function setBusinessId($BusinessId) {
         $this->BusinessId = $BusinessId;
+    }
+
+    public function toArray() {
+        return (array)$this;
     }
 }        

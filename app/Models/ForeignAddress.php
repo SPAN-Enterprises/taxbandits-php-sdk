@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
-class ForeignAddress 
+class ForeignAddress extends Model
 {
     private $Address1;
     public function getAddress1() {

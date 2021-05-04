@@ -17,20 +17,20 @@ class JWTController extends Controller
     
         # Constructing payload
         $payload = array(
-            "iss" => env('CLIENT_ID'),
-            "sub" => env('CLIENT_ID'),
-            "aud" => env('USER_TOKEN'),
+            "iss" => env("CLIENT_ID"),
+            "sub" => env("CLIENT_ID"),
+            "aud" => env("USER_TOKEN"),
             "iat" => $ts
         );
     
         //create JWS 
-        $jws = JWT::encode($payload,  env('SECRET_ID'));
+        $jws = JWT::encode($payload,  env("SECRET_ID"));
 
 
         $response= Http::withHeaders([
            
             'Authentication' => $jws
-         ])->get(env('OATUTH_URL'));
+         ])->get(env("OATUTH_URL"));
 
         return $response['AccessToken'];
        

@@ -11,6 +11,7 @@ use App\Models\ForeignAddress;
 use App\Models\USAddress;
 use App\Models\SigningAuthority;
 
+
 class BusinessController extends Controller
 {
     public function get_all_business_list()
@@ -37,46 +38,54 @@ class BusinessController extends Controller
 
     public function save_business()
     {
+        $business=new Business();
+        $business->setBusinessNm(request('business_name'));
+        $business->setTradeNm(request('trade_nm'));
+        $business->setIsEIN(request('is_ein'));
+        $business->setEINorSSN(request('ein_or_ssn'));
+        $business->setEmail(request('email'));
+        $business->setContactNm(request('contact_nm'));
+        $business->setPhone(request('phone'));
+        $business->setPhoneExtn(request('phone_extn'));
+        $business->setFax(request('fax'));
+        $business->setBusinessType(request('business_name'));
+        $business->setSigningAuthority(request('sa_name'));
+        $business->setKindOfEmployer(request('kind_of_employer'));
+        $business->setKindOfPayer(request('kind_of_payer'));
+        $business->setIsBusinessTerminated(request('is_business_terminated'));
+        $business->setIsForeign(request('is_foreign'));
+        $business->setUSAddress(request('business_name'));
+        $business->setForeignAddress(request('business_name'));
+        $business->setBusinessId(request(null));
 
-       $data_array =  array(
-        "BusinessNm" => request('business_name'),
-        "TradeNm" => request('trade_nm'),
-        "IsEIN" =>isset($_POST['is_ein']),
-        "EINorSSN" => request('ein_or_ssn'),
-        "Email" => request('email'),
-        "ContactNm" => request('contact_nm'),
-        "Phone" => request('phone'),
-        "PhoneExtn" => request('phone_extn'),
-        "Fax" => request('fax'),
-        "IsForeign" =>request('is_foreign'),
+        if($business->getIsForeign()==true)
+        {   
+            $forienAddress=new ForeignAddress();
+            $forienAddress->setAddress1(request('address1'));
+            $forienAddress->setAddress2(request('address2'));
+            $forienAddress->setCity(request('city'));
+            $forienAddress->setProvinceOrStateNm(request('state'));
+            $forienAddress->setCountry(request('country'));
+            $forienAddress->setPostalCd(request('zip_cd'));
+            $business->setForienAddress($forienAddress);
+            
+        }else
+        {
+            $usAddress=new USAddress();
+            $usAddress->setAddress1(request('address1'));
+            $usAddress->setAddress2(request('address2'));
+            $usAddress->setCity(request('city'));
+            $usAddress->setState(request('state_drop_down'));
+            $usAddress->setZipCd(request('zip_cd'));
+            $business->setUSAddress($usAddress);
+        }
+        $signingAuthority=new SigningAuthority();
+        $signingAuthority->setName(request('sa_name'));
+        $signingAuthority->setPhone(request('sa_phone'));
+        $signingAuthority->setBusinessMemberType(request('business_member_type'));
+        $business->setSigningAuthority($signingAuthority);
 
-        $ForeignAddress    = array(
-         "Address1"  => request('address1'),
-         "Address2" => request('address2'),
-         "City"  => request('city'),
-         "ProvinceOrStateNm"  => request('state'),
-         "Country"  => request('country'),
-         "PostalCd"  => request('zip_cd')
-        ),
-        "ForienAddress" =>$ForeignAddress,
-
-        $USAddress    = array(
-         "Address1"  => request('address1'),
-         "Address2"       => request('address2'),
-         "City"  => request('city'),
-         "State"  => request('state_drop_down'),
-         "ZipCd"  => request('zip_cd')
-        ),
-         "USAddress" =>$USAddress,
-
-        $SigningAuthority    = array(
-         "Name"  => request('sa_name'),
-         "Phome" => request('sa_phone'),
-        ),
-        "SigningAuthority" =>$SigningAuthority
-      );
- 
-    error_log(json_encode( $data_array));
+        
  
     $jwtController= new JwtController();
 
@@ -88,7 +97,7 @@ class BusinessController extends Controller
     
      'Authorization' =>  $accessToken
         ])->post(env('TBS_BASE_URL').'/Business/Create', 
-        $data_array
+        $business->toArray()
     );
     error_log($response);
 

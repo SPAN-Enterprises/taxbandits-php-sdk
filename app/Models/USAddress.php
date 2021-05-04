@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 use Illuminate\Database\Eloquent\Model;
 
-class USAddress 
+class Usaddress extends Model
 {
     private $Address1;
     public function getAddress1() {
@@ -50,5 +50,8 @@ class USAddress
 
     public function setZipCd($postalCd) {
         $this->ZipCd   = $postalCd ;
+    }
+    public function toArray() {
+        return (array)$this;
     }
 }

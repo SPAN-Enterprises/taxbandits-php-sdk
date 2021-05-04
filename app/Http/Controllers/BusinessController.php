@@ -25,7 +25,7 @@ class BusinessController extends Controller
         $response= Http::withHeaders([
            
             'Authorization' =>  $accessToken
-         ])->get('https://testapi.taxbandits.com/v1.6.1/Business/List', [
+         ])->get( env('TBS_BASE_URL').'Business/List', [
             'Page' =>1,
             'PageSize' => 100,
             'FromDate' => '03/01/2021',
@@ -87,7 +87,7 @@ class BusinessController extends Controller
     $response= Http::withHeaders([
     
      'Authorization' =>  $accessToken
-        ])->post('https://testapi.taxbandits.com/v1.6.1/Business/Create', 
+        ])->post(env('TBS_BASE_URL').'/Business/Create', 
         $data_array
     );
     error_log($response);

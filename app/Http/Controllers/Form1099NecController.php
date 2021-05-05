@@ -1,14 +1,14 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\JWTController;
 use Eastwest\Json\Facades\Json;
-use App\Models\FormList;
 
-class Form1099MiscController extends Controller
+class Form1099NecController extends Controller
 {
     public function get_all_business_list()
     {
@@ -28,12 +28,13 @@ class Form1099MiscController extends Controller
             'FromDate' => '03/01/2021',
             'ToDate' => '12/31/2021',
         ]);
+        
 
-        return view('form_1099_misc_list',['businesses'=>$response['Businesses']]);
+        return view('form_1099_nec_list',['businesses'=>$response['Businesses']]);
         
     }
 
-    public function get_all_form_1099_misc_list_by_business_id()
+    public function get_all_form_1099_nec_list_by_business_id()
     {
 
         $jwtController= new JwtController();
@@ -58,8 +59,7 @@ class Form1099MiscController extends Controller
            
     return $response;
 
+
         
     }
-
-    
 }

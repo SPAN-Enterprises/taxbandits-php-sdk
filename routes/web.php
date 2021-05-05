@@ -43,3 +43,9 @@ Route::post('/form_1099_nec_list','App\Http\Controllers\Form1099NecController@ge
 
 
 
+Route::get('/render_template_w2_list','App\Http\Controllers\FormW2Controller@get_all_business_list');
+
+Route::post('/form_w2_list','App\Http\Controllers\FormW2Controller@get_all_form_w2_list_by_business_id');
+
+
+

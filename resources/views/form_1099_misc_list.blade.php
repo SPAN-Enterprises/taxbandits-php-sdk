@@ -127,20 +127,19 @@
                             document.getElementById(idVal).addEventListener("click", function(e){
                                 transmitClicked(e.target.id);
                             });
-                        }else   if(jsonData[i]['Status'] == "TRANSMITTED")
+                        }else if(jsonData[i]['Recipient']['Status'] == "TRANSMITTED" || jsonData[i]['Recipient']['Status'] == "ACCEPTED")
                         {
-
-                        getPDF = document.createElement('button');
-                        getPDF.innerHTML = "Get PDF";
-                        getPDF.value = jsonData[i]['SubmissionId'];
-                        getPDF.className = "btn";
-                        idVal = jsonData[i]['SubmissionId'];
-                        getPDF.setAttribute("id", idVal);
-                        listElement.appendChild(getPDF);
-                        document.getElementById(idVal).addEventListener("click", function(e){
-                                getPdfClicked(e.target.id);
-                            });
-                        }
+                            getPDF = document.createElement('button');
+                            getPDF.innerHTML = "Get PDF";
+                            getPDF.value = jsonData[i]['SubmissionId'];
+                            getPDF.className = "btn";
+                            idVal = jsonData[i]['SubmissionId'];
+                            getPDF.setAttribute("id", idVal);
+                            listElement.appendChild(getPDF);
+                            document.getElementById(idVal).addEventListener("click", function(e){
+                                    getPdfClicked(e.target.id);
+                                });
+                            }
 
                         listElement.appendChild(document.createElement('br'));
 

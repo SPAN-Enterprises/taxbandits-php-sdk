@@ -2,9 +2,9 @@
 @section('content')
 <div class="container">
 
-    <h2><u>Form 1099-NEC LIST</u></h2>
+    <h2><u>Form W2 LIST</u></h2>
 
-    <h3>Form1099NEC/List</h3>
+    <h3>FormW2/List</h3>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <div class="horizontalContainer">
         <label for="MISCForms_Business_BusinessNm">Businesses:</label>
@@ -13,7 +13,7 @@
             <option value={{ $business['BusinessId'] }}>{{ $business['BusinessNm'] }} - {{ $business['EINorSSN'] }}</option>
             @endforeach
         </select>
-        <button type="button" onclick="loadMISCList()">Get NEC List</button>
+        <button type="button" onclick="loadw2List()">Get W2 List</button>
     </div>
 
     <div>
@@ -52,10 +52,10 @@
         window.location = '/form_1099_misc/get_pdf?submissionId=' + submissionId;
     }
 
-    function loadMISCList()
+    function loadw2List()
     {
         $.ajax({
-			url: '/form_1099_nec_list',
+			url: '/form_w2_list',
 			data: {BusinessId: $('#MISCForms_Business_BusinessNm').val()},
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
 			type: 'POST',
@@ -63,7 +63,7 @@
                 
 
                 var json = JSON.parse(data);
-                var jsonData=json['Form1099Records'];
+                var jsonData=json['FormW2Records'];
 
                 // Make a container element for the list
                 listContainer = document.getElementById("listDiv");
@@ -92,19 +92,15 @@
 
                        
                         var recipientName;
-                        if(jsonData[i]['Recipient']!=null && jsonData[i]['Recipient']['RecipientNm']!=null)
+                        if(jsonData[i]['Employee']!=null && jsonData[i]['Employee']['EmployeeName']!=null)
                         {
-                            recipientName=jsonData[i]['Recipient']['RecipientNm'];
-                            
-                        }
-                        else if(jsonData[i]['Recipient']!=null && jsonData[i]['Recipient']['RecipientName']!=null)
-                        {
-                            recipientName=jsonData[i]['Recipient']['RecipientName'];
+                            recipientName=jsonData[i]['Employee']['EmployeeName'];
                             
                         }
                         
-                        rName.innerHTML = recipientName +' - '+jsonData[i]['Recipient']['TIN'];
-                        listItem1.innerHTML = 'RecordId: '+ jsonData[i]['Recipient']['RecipientId'];
+                        
+                        rName.innerHTML = recipientName +' - '+jsonData[i]['Employee']['SSN'];
+                        listItem1.innerHTML = 'RecordId: '+ jsonData[i]['Employee']['EmployeeId'];
                         listItem.innerHTML = 'SubmissionId: '+ jsonData[i]['SubmissionId'];
                         listItem.value = jsonData[i]['SubmissionId'];
                         businessName.innerHTML = jsonData[i]['BusinessNm'];
@@ -115,7 +111,7 @@
                         listElement.appendChild(listItem1);
                         listElement.appendChild(businessName);
 
-                        if(jsonData[i]['Recipient']['Status'] == "CREATED")
+                        if(jsonData[i]['Employee']['Status'] == "CREATED")
                         {
                             transmitBtn = document.createElement('button');
                             transmitBtn.innerHTML = "Transmit";
@@ -128,7 +124,7 @@
                             document.getElementById(idVal).addEventListener("click", function(e){
                                 transmitClicked(e.target.id);
                             });
-                        }else if(jsonData[i]['Recipient']['Status'] == "TRANSMITTED" || jsonData[i]['Recipient']['Status'] == "ACCEPTED")
+                        }else if(jsonData[i]['Employee']['Status'] == "TRANSMITTED")
                         {
 
                         getPDF = document.createElement('button');

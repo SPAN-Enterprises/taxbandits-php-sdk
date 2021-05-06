@@ -196,8 +196,8 @@ class Form1099NecController extends Controller
                                 "StateIncome"  =>16)
                         ),
                     
+                    )
                 )
-            )
             )
         );
      

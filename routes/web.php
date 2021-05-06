@@ -35,6 +35,14 @@ Route::get('/render_template_1099_misc_list','App\Http\Controllers\Form1099MiscC
 
 Route::get('/form_1099_misc_list','App\Http\Controllers\Form1099MiscController@get_all_form_1099_misc_list_by_business_id');
 
+Route::get('/render_template_create_form_1099_misc','App\Http\Controllers\Form1099MiscController@create_form_1099_misc');
+
+Route::post('/get_recipient_by_business_id_misc','App\Http\Controllers\Form1099MiscController@get_recipient_by_business_id');
+
+Route::post('/save_form_1099_misc','App\Http\Controllers\Form1099MiscController@save_form_1099_misc');
+
+
+
 
 
 Route::get('/render_template_nec_list','App\Http\Controllers\Form1099NecController@get_all_business_list');

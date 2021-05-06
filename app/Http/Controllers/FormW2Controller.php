@@ -33,9 +33,8 @@ class FormW2Controller extends Controller
         
     }
 
-    public function get_all_form_w2_list_by_business_id()
+    public function get_all_form_w2_list_by_business_id(Request $request)
     {
-
         $jwtController= new JwtController();
 
         $accessToken = $jwtController->generateToken();
@@ -46,7 +45,7 @@ class FormW2Controller extends Controller
            
             'Authorization' =>  $accessToken
          ])->get( env('TBS_BASE_URL').'FormW2/List', [
-            'BusinessId' =>"c00d7802-0d64-4d55-8019-6dd97093aca5",
+            'BusinessId' =>$request->BusinessId,
             'Page' =>1,
             'PageSize' => 100,
             'FromDate' => '03/01/2021',

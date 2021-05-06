@@ -1,0 +1,91 @@
+$form1099NECCreateRequest=new Form1099NECCreateRequest();
+
+        $returnHeader=new ReturnHeader();
+
+        $business=new Business();
+       
+
+        $business->setBusinessId(request('business_list'));
+        $returnHeader->setBusiness($business);
+        $form1099NECCreateRequest->setReturnHeader($returnHeader);
+        
+        $submissionManifest=new SubmissionManifest();
+        $submissionManifest->setTaxYear(2020);
+        $submissionManifest->setIsFederalFiling(2020);
+        $submissionManifest->setIsStateFiling(true);
+        $submissionManifest->setIsPostal(true);
+        $submissionManifest->setIsOnlineAccess(true);
+        $submissionManifest->setIsTinMatching(true);
+        $submissionManifest->setIsScheduleFiling(true);
+       
+        $scheduleFiling=new ScheduleFiling();
+        $scheduleFiling->setEfileDate("04/21/2021");
+
+        $submissionManifest->setScheduleFiling($scheduleFiling);
+
+        $form1099NECCreateRequest->setSubmissionManifest($submissionManifest);
+
+        
+        $returnData=new ReturnData();
+    # returnData->setRecordId(null)
+        $returnData->setSequenceId("1");
+    # set Recipient data
+    
+        $recipient=new Recipient();
+    if (request('recipientsDropDown') != '-1')
+        $recipient->setRecipientId(request('recipientsDropDown'));
+    else
+        $recipient->setRecipientId('');
+
+        $recipient->setTINType("EIN");
+        $recipient->setTIN(request('rTIN'));
+        $recipient->setFirstPayeeNm(request('rName'));
+        $recipient->setSecondPayeeNm("");
+        $recipient->setIsForeign(False);
+        $usAddress=new USAddress();
+        $usAddress->setAddress1("1751 Kinsey Rd");
+        $usAddress->setAddress2("Main St");
+        $usAddress->setCity("Dothan");
+        $usAddress->setState("AL");
+        $usAddress->setZipCd("36303");
+        $recipient->setUSAddress($usAddress);
+    # recipientModel->setForeignAddress(null)
+        $recipient->setEmail("subbu+php@spanllc.com");
+        $recipient->setFax("1234567890");
+        $recipient->setPhone("1234567890");
+        $returnData->setRecipient($recipient);
+    # set NEC data
+    
+        $necFormData=new NECFormData();
+        $necFormData->setB1NEC(request('amount'));
+        $necFormData->setB4FedTaxWH(54.12);
+        $necFormData->setIsFATCA(true);
+        $necFormData->setIs2ndTINnot(true);
+        $necFormData->setAccountNum("20123130000009000001");
+    
+        
+        $state=new States();
+        $state->setStateCd("PA");
+        $state->setStateWH(15);
+        $state->setStateIdNum("99999999");
+        $state->setStateIncome(16);
+        $statesList[]=$state;  # State 1
+        $state=new States();
+        $state->setStateCd("AZ");
+        $state->setStateWH(17);
+        $state->setStateIdNum("99-999999");
+        $state->setStateIncome(18);
+        $statesList[]=$state;  # State 2
+        $necFormData->setStates($statesList);
+
+        $returnData->setNECFormData($necFormData);
+       
+        $returnDataList[] = $returnData;
+        
+
+        $form1099NECCreateRequest->setReturnData($returnDataList);
+
+        
+        $book= $form1099NECCreateRequest->toArray();
+        $json = json_encode($book); 
+        error_log($json);

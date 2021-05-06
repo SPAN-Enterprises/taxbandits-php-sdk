@@ -41,11 +41,21 @@ Route::get('/render_template_nec_list','App\Http\Controllers\Form1099NecControll
 
 Route::post('/form_1099_nec_list','App\Http\Controllers\Form1099NecController@get_all_form_1099_nec_list_by_business_id');
 
+Route::get('/render_template_create_form_1099_nec','App\Http\Controllers\Form1099NecController@create_form_1099_nec');
+
+Route::post('/get_recipient_by_business_id','App\Http\Controllers\Form1099NecController@get_recipient_by_business_id');
+
+Route::post('/save_form_1099_nec','App\Http\Controllers\Form1099NecController@save_form_1099_nec');
+
+
+
 
 
 Route::get('/render_template_w2_list','App\Http\Controllers\FormW2Controller@get_all_business_list');
 
 Route::post('/form_w2_list','App\Http\Controllers\FormW2Controller@get_all_form_w2_list_by_business_id');
+
+
 
 
 

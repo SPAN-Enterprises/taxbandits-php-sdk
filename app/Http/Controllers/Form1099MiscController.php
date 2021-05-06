@@ -33,7 +33,7 @@ class Form1099MiscController extends Controller
         
     }
 
-    public function get_all_form_1099_misc_list_by_business_id()
+    public function get_all_form_1099_misc_list_by_business_id(Request $request)
     {
 
         $jwtController= new JwtController();
@@ -45,8 +45,8 @@ class Form1099MiscController extends Controller
         $response= Http::withHeaders([
            
             'Authorization' =>  $accessToken
-         ])->get( env('TBS_BASE_URL').'Form1099MISC/List', [
-            'BusinessId' =>"bc1f60c5-4b72-49e0-bf51-697bd5a5035f",
+         ])->get(env('TBS_BASE_URL').'Form1099MISC/List',[
+            'BusinessId' =>$request->BusinessId,
             'Page' =>1,
             'PageSize' => 100,
             'FromDate' => '03/01/2021',
@@ -54,9 +54,9 @@ class Form1099MiscController extends Controller
         ]);
 
        
-    error_log($response);
-           
-    return $response;
+        error_log($response);
+            
+        return $response;
 
         
     }

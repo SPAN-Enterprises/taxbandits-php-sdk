@@ -111,7 +111,7 @@ class Form1099MiscController extends Controller
     {
 
     
-        $form1099NECCreateRequest =  array(
+        $form1099MiscCreateRequest =  array(
 
             "ReturnHeader" => array(
 
@@ -207,7 +207,7 @@ class Form1099MiscController extends Controller
 
         $response= Http::withHeaders([
             'Authorization' =>  $accessToken
-         ])->post( env('TBS_BASE_URL').'Form1099MISC/Create', 
+         ])->post( env('TBS_BASE_URL').'FormW2/Create', 
            $form1099NECCreateRequest
         );
 

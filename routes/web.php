@@ -63,6 +63,12 @@ Route::get('/render_template_w2_list','App\Http\Controllers\FormW2Controller@get
 
 Route::post('/form_w2_list','App\Http\Controllers\FormW2Controller@get_all_form_w2_list_by_business_id');
 
+Route::get('/render_template_create_form_w2','App\Http\Controllers\FormW2Controller@create_form_w2');
+
+Route::post('/form_w2_success','App\Http\Controllers\FormW2Controller@save_form_w2');
+
+
+
 
 
 

@@ -30,7 +30,7 @@ class JWTController extends Controller
         $response= Http::withHeaders([
            
             'Authentication' => $jws
-         ])->get(env("OATUTH_URL"));
+         ])->get(env("TSB_OAUTH_URL"));
 
         return $response['AccessToken'];
        

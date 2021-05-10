@@ -58,7 +58,7 @@
 
 
 <form action="/render_template_w9" method="get">
-    <input type="submit" value="Form W9 List"/>
+    <input type="submit" value="Form W9"/>
 </form>
 
 

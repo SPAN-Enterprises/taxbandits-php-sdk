@@ -111,11 +111,9 @@ class FormW2Controller extends Controller
 
             
             "ReturnDataFormW2"=> array(
-                
+
                 array(
-
                     "SequenceId"  => 1,
-
                     "Recipient"=> array(
                         "SSN"  => "W2Forms[0].Employee.SSN",
                         "FirstNm"  => request('W2Forms[0].Employee.FirstNm'),
@@ -134,7 +132,6 @@ class FormW2Controller extends Controller
                     ),                                                                                                              
 
                     "NECFormData"=> array(
-
                         "B1Wages"  => request('W2Forms[0].FormDetails.Box1'),
                         "B2FedTaxWH"  => request('W2Forms[0].FormDetails.Box2'),
                         "B3SocSecWages"  =>request('W2Forms[0].FormDetails.Box3'),

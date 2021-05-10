@@ -51,5 +51,17 @@
     <input type="submit" value="Form 1099-MISC List"/>
 </form>
 
+<p></p>
+<p></p>
+
+<h3>Form W9</h3>
+
+
+<form action="/render_template_w9" method="get">
+    <input type="submit" value="Form W9 List"/>
+</form>
+
+
+
 
 @endsection

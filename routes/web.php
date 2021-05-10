@@ -68,6 +68,14 @@ Route::get('/render_template_create_form_w2','App\Http\Controllers\FormW2Control
 Route::post('/form_w2_success','App\Http\Controllers\FormW2Controller@save_form_w2');
 
 
+Route::get('/render_template_w9','App\Http\Controllers\FormW9Controller@render_template_w9');
+
+Route::get('/form_w9_view','App\Http\Controllers\FormW9Controller@form_w9_view');
+
+
+
+
+
 
 
 

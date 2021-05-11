@@ -93,8 +93,7 @@ class FormW9Controller extends Controller
         $response= Http::withHeaders([
             'Authorization' =>  $accessToken
          ])->get( env('TBS_BASE_URL').'FormW9/RequestByUrl',[
-            'AccountNum' =>$request->uid,
-            'BusinessId'=> 'bc1f60c5-4b72-49e0-bf51-697bd5a5035f']
+            'AccountNum' =>$request->uid]
         );
 
        

@@ -14,28 +14,39 @@ use App\Models\SigningAuthority;
 
 class BusinessController extends Controller
 {
+    # Returns Lists every business created for a date range.
+    # Method: Business/Create (POST)
+    public function getBusinessList()
+    {
+            $jwtController= new JwtController();
+    
+            $accessToken = $jwtController-> get_access_token();
+    
+            error_log($accessToken);
+    
+            $response= Http::withHeaders([
+               
+                'Authorization' =>  $accessToken
+             ])->get( env('TBS_BASE_URL').'Business/List', [
+                'Page' =>1,
+                'PageSize' => 100,
+                'FromDate' => '03/01/2021',
+                'ToDate' => '12/31/2021',
+            ]);
+    
+            return $response;    
+    }
+
+
+    # Returns list of all the businesses
     public function get_all_business_list()
     {
 
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->generateToken();
-
-        error_log($accessToken);
-
-        $response= Http::withHeaders([
-           
-            'Authorization' =>  $accessToken
-         ])->get( env('TBS_BASE_URL').'Business/List', [
-            'Page' =>1,
-            'PageSize' => 100,
-            'FromDate' => '03/01/2021',
-            'ToDate' => '12/31/2021',
-        ]);
-
-        return view('business_list',['businesses'=>$response['Businesses']]);
+        return view('business_list',['businesses'=>$this->getBusinessList()['Businesses']]);
     }
 
+    # Creates a new Business and returns Business Id on successful creation
+    # Method: Business/Create (POST)
     public function save_business()
     {
         $business =  array(
@@ -80,7 +91,7 @@ class BusinessController extends Controller
  
     $jwtController= new JwtController();
 
-    $accessToken = $jwtController->generateToken();
+    $accessToken = $jwtController->get_access_token();
 
     error_log($accessToken);
 

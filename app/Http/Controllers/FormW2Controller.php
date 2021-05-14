@@ -5,39 +5,27 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\JWTController;
+use App\Http\Controllers\BusinessController;
 use Eastwest\Json\Facades\Json;
 
 class FormW2Controller extends Controller
 {
+    # Returns list of all the businesses
     public function get_all_business_list()
     {
+        $businessController= new BusinessController();
 
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->generateToken();
-
-        error_log($accessToken);
-
-        $response= Http::withHeaders([
-           
-            'Authorization' =>  $accessToken
-         ])->get( env('TBS_BASE_URL').'Business/List', [
-            'Page' =>1,
-            'PageSize' => 100,
-            'FromDate' => '03/01/2021',
-            'ToDate' => '12/31/2021',
-        ]);
-        
-        error_log($response);
-        return view('form_w2_list',['businesses'=>$response['Businesses']]);
-        
+        return view('form_w2_list',['businesses'=>$businessController->getBusinessList()['Businesses']]);
+       
     }
-
+    
+    #LIST endpoint lets you list the basic details of all the returns irrespective of their record status. 
+    #List can be customized by sending values corresponding to its optional parameters, which gets applied as filters to the list.
     public function get_all_form_w2_list_by_business_id(Request $request)
     {
         $jwtController= new JwtController();
 
-        $accessToken = $jwtController->generateToken();
+        $accessToken = $jwtController->get_access_token();
 
         error_log($accessToken);
 
@@ -52,20 +40,19 @@ class FormW2Controller extends Controller
             'ToDate' => date("m/d/Y"),
         ]);
 
-       
-    error_log($response);
-           
+    error_log($response);  
+
     return $response;
-
-
-        
+   
     }
 
+    # Render create Form W2 Template
     public function create_form_w2()
     {
         return view('create_form_w2');
     }
 
+    #The CREATE endpoint takes in the Request Payload, validates data, applies the business rules, and creates the appropriate tax return
     public function save_form_w2()
     {
 
@@ -144,7 +131,7 @@ class FormW2Controller extends Controller
      
         $jwtController= new JwtController();
 
-        $accessToken = $jwtController->generateToken();
+        $accessToken = $jwtController->get_access_token();
 
         error_log($accessToken);
 

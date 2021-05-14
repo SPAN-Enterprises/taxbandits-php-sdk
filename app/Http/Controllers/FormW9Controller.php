@@ -9,10 +9,8 @@ use Eastwest\Json\Facades\Json;
 
 class FormW9Controller extends Controller
 {
-    public function render_template_w9()
-    {
-
-        function GUID()
+   # Unique GUID Generation
+   public function GUID()
     {
         if (function_exists('com_create_guid') === true)
         {
@@ -22,81 +20,70 @@ class FormW9Controller extends Controller
     return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
     }
 
+    #Payess List 
+    public function render_template_w9()
+    {
         $Payees= array(
             array(
                 "PayeeName"  => "Heidie Daleman",
                 "Email"  => "hdaleman0@soundcloud.comedit",
-                "uid"  => GUID()
+                "uid"  => $this->GUID()
             ),
             array(
                 "PayeeName"  => "Cornall Gagg",
                 "Email"  => "cgagg1@howstuffworks.comedit",
-                "uid"  => GUID()
+                "uid"  => $this->GUID()
             ),
             array(
                 "PayeeName"  => "Babbette Heustice",
                 "Email"  => "bheustice2@independent.co.ukedit",
-                "uid"  => GUID()
+                "uid"  => $this->GUID()
             ),
             array(
                 "PayeeName"  => " Arvin Caudrey",
                 "Email"  => "acaudrey3@shareasale.comedit",
-                "uid"  => GUID()
+                "uid"  => $this->GUID()
             ),
             array(
                 "PayeeName"  => "  Dominique Phebee",
                 "Email"  => "dphebee4@intel.comedit",
-                "uid"  => GUID()
+                "uid"  => $this-> GUID()
             ),
             array(
                 "PayeeName"  => "Juliet Dudin",
                 "Email"  => "jdudin5@google.fredit",
-                "uid"  => GUID()
+                "uid"  => $this->GUID()
             ),
             array(
                 "PayeeName"  => "Gayla Kimm",
                 "Email"  => "gkimm6@yandex.ruedit",
-                "uid"  => GUID()
+                "uid"  => $this->GUID()
             ),array(
                 "PayeeName"  => "Miof mela Roskelley",
                 "Email"  => "mroskelley8@rambler.ruedit",
-                "uid"  => GUID()
+                "uid"  => $this->GUID()
             ),
             array(
                 "PayeeName"  => "Gusella Rolston",
                 "Email"  => "grolston9@jugem.jpedit",
-                "uid"  => GUID()
+                "uid"  => $this->GUID()
             )
-
-            
-
         );
 
-
-        
-
-
         return view('form_w9_list',['Payees'=>$Payees]);
-
-
-        
     }
-
+    #Will generate an unique URL and will send the link in the response
     public function form_w9_view(Request $request)
     {
         $jwtController= new JwtController();
 
-        $accessToken = $jwtController->generateToken();
-
-       
+        $accessToken = $jwtController->get_access_token();
 
         $response= Http::withHeaders([
             'Authorization' =>  $accessToken
          ])->get( env('TBS_BASE_URL').'FormW9/RequestByUrl',[
             'AccountNum' =>$request->uid]
         );
-
-       
 
         return view('form_w9_view',['FormW9'=>$response]);
     }

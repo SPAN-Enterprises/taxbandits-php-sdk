@@ -7,6 +7,7 @@ use App\Http\Resources\ProjectResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\JWTController;
+use App\Http\Controllers\BusinessController;
 use Eastwest\Json\Facades\Json;
 use App\Models\Business;
 use App\Models\ForeignAddress;
@@ -23,36 +24,23 @@ use App\Models\States;
 
 class Form1099NecController extends Controller
 {
+   # Returns list of all the businesses
     public function get_all_business_list()
     {
+        $businessController= new BusinessController();
 
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->generateToken();
-
-        error_log($accessToken);
-
-        $response= Http::withHeaders([
-           
-            'Authorization' =>  $accessToken
-         ])->get( env('TBS_BASE_URL').'Business/List', [
-            'Page' =>1,
-            'PageSize' => 100,
-            'FromDate' => '03/01/2021',
-            'ToDate' => '12/31/2021',
-        ]);
-        
-
-        return view('form_1099_nec_list',['businesses'=>$response['Businesses']]);
+        return view('form_1099_nec_list',['businesses'=>$businessController->getBusinessList()['Businesses']]);
         
     }
 
-    public function get_all_form_1099_nec_list_by_business_id(Request $request)
+    # Lists all Form 1099-NEC returns created and transmitted on the account for a particular Submission or Payer. 
+    # Form 1099-NEC returns will be listed based on the filters sent in the Request.
+    # Method: Form1099NEC/List (GET)
+    public function get_nec_list_by_business_id($business_id)
     {
-
         $jwtController= new JwtController();
 
-        $accessToken = $jwtController->generateToken();
+        $accessToken = $jwtController->get_access_token();
 
         error_log($accessToken);
 
@@ -60,7 +48,7 @@ class Form1099NecController extends Controller
            
             'Authorization' =>  $accessToken
          ])->get( env('TBS_BASE_URL').'Form1099NEC/List', [
-            'BusinessId' =>$request->BusinessId,
+            'BusinessId' =>$business_id,
             'Page' =>1,
             'PageSize' => 100,
             'FromDate' => '03/01/2021',
@@ -68,60 +56,37 @@ class Form1099NecController extends Controller
         ]);
 
        
-        error_log($response);
-            
-        return $response;
-
-
+      return $response;
         
     }
 
+    # Returns NEC List of specific business Id  
+    public function get_all_form_1099_nec_list_by_business_id(Request $request)
+    {   
+        return $this->get_nec_list_by_business_id($request->BusinessId);
+    }
+
+
+   # Get Business list for form 1099-NEC
     public function create_form_1099_nec()
     {
+        $businessController= new BusinessController();
 
-        $jwtController= new JwtController();
+        return view('create_form_1099_nec',['businesses'=>$businessController->getBusinessList()['Businesses']]);
 
-        $accessToken = $jwtController->generateToken();
-
-        error_log($accessToken);
-
-        $response= Http::withHeaders([
-           
-            'Authorization' =>  $accessToken
-         ])->get( env('TBS_BASE_URL').'Business/List', [
-            'Page' =>1,
-            'PageSize' => 100,
-            'FromDate' => '03/01/2021',
-            'ToDate' => '12/31/2021',
-        ]);
-
-        return view('create_form_1099_nec',['businesses'=>$response['Businesses']]);
     }
 
+    
+    # Returns Recipient List of specific business Id  
     public function get_recipient_by_business_id(Request $request)
     {
-    
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->generateToken();
-
-        error_log($accessToken);
-
-        $response= Http::withHeaders([
-            'Authorization' =>  $accessToken
-         ])->get( env('TBS_BASE_URL').'Form1099NEC/List', [
-            'BusinessId' =>$request->BusinessId,
-            'Page' =>1,
-            'PageSize' => 100,
-            'FromDate' => '03/01/2021',
-            'ToDate' => '12/31/2021',
-        ]);
-
-        error_log($response);
-            
-        return $response;
+        return $this->get_nec_list_by_business_id($request->BusinessId);
     }
 
+
+    # Creates Form 1099-NEC returns in TaxBandits. You can send multiple 1099-NEC forms in a single request for the same Payer. 
+    # In response, a SubmissionId is created which is further used as a reference for all other methods of Form 1099 NEC API.
+    # Method: Form1099NEC/Create (POST)
     public function save_form_1099_nec(Request $request)
     {
 
@@ -203,7 +168,7 @@ class Form1099NecController extends Controller
      
         $jwtController= new JwtController();
 
-        $accessToken = $jwtController->generateToken();
+        $accessToken = $jwtController->get_access_token();
 
         error_log($accessToken);
 

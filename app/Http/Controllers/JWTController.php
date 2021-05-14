@@ -8,10 +8,9 @@ use \Firebase\JWT\JWT;
 
 class JWTController extends Controller
 {
-    function generateToken()
+   
+    function get_access_token()
     {
-            
-       
         # Fetching current epoch time
         $ts = time();
     
@@ -23,20 +22,17 @@ class JWTController extends Controller
             "iat" => $ts
         );
     
-        //create JWS 
+        # Generate JWS using the Client Id, Secret Id and User Token
+        # JWS generation using HS256 algorithm
         $jws = JWT::encode($payload,  env("SECRET_ID"));
 
-
+        # Returns the Access token generated using JWS
         $response= Http::withHeaders([
            
             'Authentication' => $jws
-         ])->get(env("TSB_OAUTH_URL"));
+         ])->get(env("TBS_OAUTH_URL"));
 
         return $response['AccessToken'];
-       
-        
-
-
-        
+ 
     }
 }

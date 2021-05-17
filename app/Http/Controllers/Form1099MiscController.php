@@ -8,6 +8,7 @@ use App\Http\Controllers\JWTController;
 use App\Http\Controllers\BusinessController;
 use Eastwest\Json\Facades\Json;
 use App\Models\FormList;
+use Session;
 
 class Form1099MiscController extends Controller
 {
@@ -25,15 +26,11 @@ class Form1099MiscController extends Controller
     # Method: Form1099MISC/List (GET)
     public function get_misc_list_by_business_id($business_id)
     {
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->get_access_token();
-
-        error_log($accessToken);
+        
 
         $response= Http::withHeaders([
            
-            'Authorization' =>  $accessToken
+            'Authorization' =>  Session::get('jwt_access_token')
          ])->get(env('TBS_BASE_URL').'Form1099MISC/List',[
             'BusinessId' =>$business_id,
             'Page' =>1,
@@ -41,9 +38,6 @@ class Form1099MiscController extends Controller
             'FromDate' => '03/01/2021',
             'ToDate' => '12/31/2021',
         ]);
-
-       
-        error_log($response);
             
         return $response;
     }
@@ -168,14 +162,9 @@ class Form1099MiscController extends Controller
             )
         );
      
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->get_access_token();
-
-        error_log($accessToken);
-
+    
         $response= Http::withHeaders([
-            'Authorization' =>  $accessToken
+            'Authorization' =>  Session::get('jwt_access_token')
          ])->post( env('TBS_BASE_URL').'FormW2/Create', 
            $form1099NECCreateRequest
         );

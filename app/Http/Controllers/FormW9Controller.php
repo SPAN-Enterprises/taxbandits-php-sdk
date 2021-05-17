@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\JWTController;
 use Eastwest\Json\Facades\Json;
-
+use Session;
 class FormW9Controller extends Controller
 {
    # Unique GUID Generation
@@ -75,12 +75,9 @@ class FormW9Controller extends Controller
     #Will generate an unique URL and will send the link in the response
     public function form_w9_view(Request $request)
     {
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->get_access_token();
 
         $response= Http::withHeaders([
-            'Authorization' =>  $accessToken
+            'Authorization' =>  Session::get('jwt_access_token')
          ])->get( env('TBS_BASE_URL').'FormW9/RequestByUrl',[
             'AccountNum' =>$request->uid]
         );

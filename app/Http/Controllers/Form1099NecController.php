@@ -21,6 +21,7 @@ use App\Models\ReturnData;
 use App\Models\Recipient;
 use App\Models\NECFormData;
 use App\Models\States;
+use Session;
 
 class Form1099NecController extends Controller
 {
@@ -38,15 +39,10 @@ class Form1099NecController extends Controller
     # Method: Form1099NEC/List (GET)
     public function get_nec_list_by_business_id($business_id)
     {
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->get_access_token();
-
-        error_log($accessToken);
 
         $response= Http::withHeaders([
            
-            'Authorization' =>  $accessToken
+            'Authorization' =>  Session::get('jwt_access_token')
          ])->get( env('TBS_BASE_URL').'Form1099NEC/List', [
             'BusinessId' =>$business_id,
             'Page' =>1,
@@ -166,14 +162,9 @@ class Form1099NecController extends Controller
             )
         );
      
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->get_access_token();
-
-        error_log($accessToken);
 
         $response= Http::withHeaders([
-            'Authorization' =>  $accessToken
+            'Authorization' =>  Session::get('jwt_access_token')
          ])->post( env('TBS_BASE_URL').'Form1099NEC/Create', 
            $form1099NECCreateRequest
         );

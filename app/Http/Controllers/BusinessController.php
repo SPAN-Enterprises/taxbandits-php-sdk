@@ -10,23 +10,33 @@ use App\Models\Business;
 use App\Models\ForeignAddress;
 use App\Models\USAddress;
 use App\Models\SigningAuthority;
-
+use Session;
 
 class BusinessController extends Controller
 {
-    # Returns Lists every business created for a date range.
-    # Method: Business/Create (POST)
-    public function getBusinessList()
+
+    public function index()
     {
             $jwtController= new JwtController();
     
             $accessToken = $jwtController-> get_access_token();
     
             error_log($accessToken);
+
+            return view('index');
+    }
+    
+
+
+
+    # Returns Lists every business created for a date range.
+    # Method: Business/Create (POST)
+    public function getBusinessList()
+    {
     
             $response= Http::withHeaders([
                
-                'Authorization' =>  $accessToken
+                'Authorization' =>  Session::get('jwt_access_token')
              ])->get( env('TBS_BASE_URL').'Business/List', [
                 'Page' =>1,
                 'PageSize' => 100,
@@ -49,6 +59,9 @@ class BusinessController extends Controller
     # Method: Business/Create (POST)
     public function save_business()
     {
+
+        
+
         $business =  array(
             "BusinessNm" => request('business_name'),
             "TradeNm" => request('trade_nm'),
@@ -87,21 +100,13 @@ class BusinessController extends Controller
             "SigningAuthority" =>$SigningAuthority
           );
 
-        
- 
-    $jwtController= new JwtController();
-
-    $accessToken = $jwtController->get_access_token();
-
-    error_log($accessToken);
-
     $response= Http::withHeaders([
     
-     'Authorization' =>  $accessToken
+     'Authorization' =>  Session::get('jwt_access_token')
         ])->post(env('TBS_BASE_URL').'/Business/Create', 
         $business
     );
-    error_log($response);
+    
 
     if ($response['StatusCode'] == 200)
     {

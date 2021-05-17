@@ -17,10 +17,11 @@
 
             <li><a href="/">Home</a></li>
             <li><a href="/business_list">Businesses</a></li>
-            <li><a href="/render_template_1099_misc_list">List 1099-MISC</a></li>
-            <li><a href="/render_template_create_form_1099_nec">Create 1099-NEC </a></li>
-            <li><a href="/render_template_create_form_1099_misc">Create 1099-MISC </a></li>
-            <li><a href="/render_template_create_form_w2">Create W-2 </a></li>
+            <li><a href="/render_template_1099_misc_list">1099-MISC</a></li>
+            <li><a href="/render_template_nec_list">1099-NEC </a></li>
+            <li><a href="/render_template_1099_misc_list">1099-MISC </a></li>
+            <li><a href="/render_template_w2_list">W-2 </a></li>
+            <li><a href="/render_template_w9">W-9 </a></li>
         </ul>
 
     </div>

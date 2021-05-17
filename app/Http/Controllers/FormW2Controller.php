@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\JWTController;
 use App\Http\Controllers\BusinessController;
 use Eastwest\Json\Facades\Json;
+use Session;
 
 class FormW2Controller extends Controller
 {
@@ -23,15 +24,10 @@ class FormW2Controller extends Controller
     #List can be customized by sending values corresponding to its optional parameters, which gets applied as filters to the list.
     public function get_all_form_w2_list_by_business_id(Request $request)
     {
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->get_access_token();
-
-        error_log($accessToken);
 
         $response= Http::withHeaders([
            
-            'Authorization' =>  $accessToken
+            'Authorization' =>  Session::get('jwt_access_token')
          ])->get( env('TBS_BASE_URL').'FormW2/List', [
             'BusinessId' =>$request->BusinessId,
             'Page' =>1,
@@ -49,6 +45,9 @@ class FormW2Controller extends Controller
     # Render create Form W2 Template
     public function create_form_w2()
     {
+        
+    
+
         return view('create_form_w2');
     }
 
@@ -129,14 +128,9 @@ class FormW2Controller extends Controller
             )
         );
      
-        $jwtController= new JwtController();
-
-        $accessToken = $jwtController->get_access_token();
-
-        error_log($accessToken);
 
         $response= Http::withHeaders([
-            'Authorization' =>  $accessToken
+            'Authorization' =>  Session::get('jwt_access_token')
          ])->post( env('TBS_BASE_URL').'Form1099NEC/Create', 
            $FormW2Request
         );

@@ -52,23 +52,25 @@ class FormW2Controller extends Controller
     }
 
     #The CREATE endpoint takes in the Request Payload, validates data, applies the business rules, and creates the appropriate tax return
-    public function save_form_w2()
+    public function save_form_w2(Request $request)
     {
-
+        error_log(request('W2Forms_Business_BusinessNm'));
         $FormW2Request =  array(
+
+           
 
             "ReturnHeader" => array(
 
                 "Business"=>array(
-                    "BusinessNm"=>(request('W2Forms[0].Business.BusinessNm')),
+                    "BusinessNm"  => (request('W2Forms_Business_BusinessNm')),
                     "TradeNm"=>"LLC",
                     "IsEIN"=>true,
-                    "EINorSSN"=>(request('W2Forms[0].Business.EINorSSN')),
-                    "Email"=>(request('W2Forms[0].Business.Email')),
-                    "ContactNm"=>(request('W2Forms[0].Business.ContactNm')),
-                    "Phone"=>(request('W2Forms[0].Business.Phone')),
-                    "KindOfEmployer"=>(request('W2Forms[0].Business.KindOfEmployer')),
-                    "KindOfPayer"=>(request('W2Forms[0].Business.KindOfPayer')),
+                    "EINorSSN"  => (request('W2Forms_Business_EINorSSN')),
+                    "Email"  => (request('W2Forms_Business_Email')),
+                    "ContactNm"  => (request('W2Forms_Business_ContactNm')),
+                    "Phone"  => (request('W2Forms_Business_Phone')),
+                    "KindOfEmployer"  => (request('W2Forms_Business_KindOfEmployer')),
+                    "KindOfPayer"  => (request('W2Forms_Business_KindOfPayer')),
                     "IsForeign"=>false,
                     "USAddress"  => array(
                         "Address1"  => "1751 Kinsey Rd",
@@ -96,17 +98,17 @@ class FormW2Controller extends Controller
             ),
 
             
-            "ReturnDataFormW2"=> array(
+            "ReturnData"=> array(
 
                 array(
                     "SequenceId"  => 1,
-                    "Recipient"=> array(
-                        "SSN"  => "W2Forms[0].Employee.SSN",
-                        "FirstNm"  => request('W2Forms[0].Employee.FirstNm'),
-                        "MiddleNm"  => request('W2Forms[0].Employee.MiddleNm'),
-                        "LastNm"  => request('W2Forms[0].Employee.LastNm'),
-                        "Email"  =>  request('W2Forms[0].Employee.Email'),
-                        "Phone"  =>  request('W2Forms[0].Employee.Phone'),
+                    "Employee"=> array(
+                        "SSN"  => request('W2Forms_Employee_SSN'),
+                        "FirstNm"  => request('W2Forms_Employee_FirstNm'),
+                        "MiddleNm"  => request('W2Forms_Employee_MiddleNm'),
+                        "LastNm"  => request('W2Forms_Employee_LastNm'),
+                        "Email"  =>  request('W2Forms_Employee_Email'),
+                        "Phone"  =>  request('W2Forms_Employee_Phone'),
                         "IsForeign"  =>  false,
                         "USAddress"  => array(
                             "Address1"  => "1751 Kinsey Rd",
@@ -117,21 +119,21 @@ class FormW2Controller extends Controller
                         )
                     ),                                                                                                              
 
-                    "NECFormData"=> array(
-                        "B1Wages"  => request('W2Forms[0].FormDetails.Box1'),
-                        "B2FedTaxWH"  => request('W2Forms[0].FormDetails.Box2'),
-                        "B3SocSecWages"  =>request('W2Forms[0].FormDetails.Box3'),
-                        "B4SocSecTaxWH"  => request('W2Forms[0].FormDetails.Box4')
+                    "W2FormData"=> array(
+                        "B1Wages"  => request('W2Forms_FormDetails_Box1'),
+                        "B2FedTaxWH"  => request('W2Forms_FormDetails_Box2'),
+                        "B3SocSecWages"  => request('W2Forms_FormDetails_Box3'),
+                        "B4SocSecTaxWH"  => request('W2Forms_FormDetails_Box4')
                     
                     )
                 )
             )
         );
-     
+        error_log(json_encode($FormW2Request));
 
         $response= Http::withHeaders([
             'Authorization' =>  Session::get('jwt_access_token')
-         ])->post( env('TBS_BASE_URL').'Form1099NEC/Create', 
+         ])->post( env('TBS_BASE_URL').'FormW2/Create', 
            $FormW2Request
         );
 
@@ -140,7 +142,45 @@ class FormW2Controller extends Controller
         return $response;
     }
 
+    public function transmit_form_w2(Request $request)
+    {
+
+        $response= Http::withHeaders([
+            'Authorization' =>  Session::get('jwt_access_token')
+         ])->post( env('TBS_BASE_URL').'FormW2/Transmit',[ 
+         'SubmissionId' =>$request->submissionId,
+         ]);
+
+        error_log($response);
+
+        if ($response!=null)
+        {
+            if ($response['StatusCode'] == 200){
     
+                $responseJson='Status Timestamp=' . $response['FormW2Records']['SuccessRecords'][0]['StatusTs'];
+                $ErrorMessage='Status= ' . $response['FormW2Records']['SuccessRecords'][0]['Status'];
+                $ButtonText="Form 1099-MISC";
+                $FormType="MISC";
+
+                return view('success', ['response'=>$responseJson],['ErrorMessage'=>$ErrorMessage],['formtype'=>$FormType],['button'=>$ButtonText]);
+            }
+
+            elseif ($response['Errors'] !=null)
+            {
+    
+                 $errorList=$response['Errors'];
+                 $status=$response['StatusCode'] . " - " . $response['StatusName'] . " - " . $response['StatusMessage'];
+
+                return view('error_list',['errorList'=>$errorList],['status'=>$status]);
+            }
+            else{
+
+                $responses='StatusMessage=' . $response['StatusCode'];
+                $ErrorMessage='Message=' . $response;
+                return view('success', ['response'=>$responses],['ErrorMessage'=>$ErrorMessage]);
+            }
+        }
+    }
 
 
     

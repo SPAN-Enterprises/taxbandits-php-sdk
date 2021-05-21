@@ -43,7 +43,7 @@
     function transmitClicked(submissionId)
     {
         console.log(submissionId);
-        window.location = '/transmit_form1099_misc?submissionId=' + submissionId;
+        window.location = '/transmit_form1099_nec?submissionId=' + submissionId;
     }
 
     function getPdfClicked(submissionId)

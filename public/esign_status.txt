@@ -1,0 +1,40 @@
+POST /webhook_esign_status HTTP/1.1
+Accept:            application/json
+Accept-Encoding:   gzip
+Content-Length:    751
+Content-Type:      application/json; charset=utf-8
+Expect:            100-continue
+Host:              091dcca76a21.ngrok.io
+Ipaddress:         34.194.208.36
+Signature:         MDhIWJGzfgonvOYFZV0rdwQynVH947rcH5yv2Ax0TxE=
+Timestamp:         05/21/2021 11:08:20.774 AM
+X-Forwarded-For:   129.213.192.60
+X-Forwarded-Proto: https
+
+{"SubmissionId":"b870040d-fded-420b-b424-28bf0dd11261","Requester":{"BusinessId":"4cb5d471-4cc9-4993-b109-fbe465c4c92b","BusinessNm":"John Enterprises","TINType":"EIN","TIN":"22-2222222"},"AccountNum":"Pe123451234","W9Status":"COMPLETED","StatusTs":"2021-05-21 07:08:20 -04:00","FormW9RequestType":"Email_API","PdfUrl":"https://taxbandits-sb-api.s3.amazonaws.com/sample/807f0318-7f5a-4841-9c08-a88b4bf7e7d9.pdf","Email":"steve@abcinc.com","FormData":{"Line1Nm":"ABC Inc","Line2Nm":null,"TINType":"EIN","TIN":"11-1111111","Address":{"Address1":"123 E. Main St","Address2":"Suite 400","City":"Rock Hill","State":"SC","ZipCd":"29730"},"FederalTaxClassification":"C Corporation","ExemptPayeeCd":"5","ExemptFromFATCA":"F","IsBackUpWH":false},"Errors":null}POST /webhook_esign_status HTTP/1.1
+Accept:            application/json
+Accept-Encoding:   gzip
+Content-Length:    797
+Content-Type:      application/json; charset=utf-8
+Expect:            100-continue
+Host:              091dcca76a21.ngrok.io
+Ipaddress:         34.194.208.36
+Signature:         FXsXuEePsYuQlQXw4aaxGEht3vgojsS4MTx/dGsmoX4=
+Timestamp:         05/21/2021 11:10:34.770 AM
+X-Forwarded-For:   129.213.192.60
+X-Forwarded-Proto: https
+
+{"SubmissionId":"c3c63fce-e4c7-4227-9169-cd2778fc8e86","Requester":{"BusinessId":"bc1f60c5-4b72-49e0-bf51-697bd5a5035f","BusinessNm":"Google INc","TINType":"EIN","TIN":"49-8574398"},"AccountNum":"4E7544F1-499C-49D5-8320-41B43EEF1A78","W9Status":"COMPLETED","StatusTs":"2021-05-21 07:10:30 -04:00","FormW9RequestType":"URL_API","PdfUrl":"https://s3.amazonaws.com/taxbandits-sb-api/098f9dff-8fc1-46e3-b47a-8d532335a509.Pdf","Email":"subbu+122@spanllc.com","FormData":{"Line1Nm":"Sangamithra","Line2Nm":"LLC","TINType":"SSN","TIN":"345-34-2523","Address":{"Address1":"123","Address2":null,"City":"Carlotte","State":"CT","ZipCd":"32634-6436"},"FederalTaxClassification":"Individual or Sole proprietor or Single-member LLC","ExemptPayeeCd":null,"ExemptFromFATCA":null,"IsBackUpWH":false},"Errors":null}POST /webhook_esign_status HTTP/1.1
+Accept:            application/json
+Accept-Encoding:   gzip
+Content-Length:    794
+Content-Type:      application/json; charset=utf-8
+Expect:            100-continue
+Host:              091dcca76a21.ngrok.io
+Ipaddress:         34.194.208.36
+Signature:         Jt39pYF/Eb+lrUjUFS2rm2bbZbGtgguMPqhB6OMVHeg=
+Timestamp:         05/21/2021 11:24:31.856 AM
+X-Forwarded-For:   129.213.192.60
+X-Forwarded-Proto: https
+
+{"SubmissionId":"d300391f-568e-4c7b-b68f-af8e7da0f1b0","Requester":{"BusinessId":"bc1f60c5-4b72-49e0-bf51-697bd5a5035f","BusinessNm":"Google INc","TINType":"EIN","TIN":"49-8574398"},"AccountNum":"F5F488ED-2CFD-47BF-94DD-5AA65CA528C2","W9Status":"COMPLETED","StatusTs":"2021-05-21 07:24:27 -04:00","FormW9RequestType":"URL_API","PdfUrl":"https://s3.amazonaws.com/taxbandits-sb-api/1b416e86-1868-4c6d-b11c-860fc794feea.Pdf","Email":"subbu+123@spanllc.com","FormData":{"Line1Nm":"Subbu K","Line2Nm":"LLC","TINType":"SSN","TIN":"214-21-4124","Address":{"Address1":"1242","Address2":null,"City":"Charlote","State":"IN","ZipCd":"25325-3452"},"FederalTaxClassification":"Individual or Sole proprietor or Single-member LLC","ExemptPayeeCd":null,"ExemptFromFATCA":null,"IsBackUpWH":false},"Errors":null}

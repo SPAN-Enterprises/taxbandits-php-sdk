@@ -37,7 +37,7 @@ class VerifyJwt
 
             return  $next($request);
         }else{
-            return  $next($request);
+            return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
         

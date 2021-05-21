@@ -18,10 +18,12 @@
             <li><a href="/">Home</a></li>
             <li><a href="/business_list">Businesses</a></li>
             <li><a href="/render_template_1099_misc_list">1099-MISC</a></li>
-            <li><a href="/render_template_nec_list">1099-NEC </a></li>
-            <li><a href="/render_template_1099_misc_list">1099-MISC </a></li>
-            <li><a href="/render_template_w2_list">W-2 </a></li>
-            <li><a href="/render_template_w9">W-9 </a></li>
+            <li><a href="/render_template_nec_list">1099-NEC</a></li>
+            <li><a href="/render_template_1099_misc_list">1099-MISC</a></li>
+            <li><a href="/render_template_w2_list">W-2</a></li>
+            <li><a href="/render_template_w9">W-9</a></li>
+            <li><a href="/webhook_responses">Webhook</a></li>
+            <li><a href="/webhook_esign_responses">Esign</a></li>
         </ul>
 
     </div>

@@ -15,6 +15,12 @@ use Illuminate\Support\Facades\Route;
 # Index Page
 Route::get('/', 'App\Http\Controllers\BusinessController@index');
 
+Route::post('/', function () {
+ 
+    return OK;
+});
+
+
 
 # Get Business List
 Route::get("business_list",'App\Http\Controllers\BusinessController@get_all_business_list')->middleware('jwt');
@@ -44,7 +50,8 @@ Route::post('/get_recipient_by_business_id_misc','App\Http\Controllers\Form1099M
 # Save Form 1099-MISC
 Route::post('/save_form_1099_misc','App\Http\Controllers\Form1099MiscController@save_form_1099_misc')->middleware('jwt');
 
-
+# Transmit Form 1099-MISC
+Route::get('/transmit_form1099_misc','App\Http\Controllers\Form1099MiscController@transmit_form1099_misc')->middleware('jwt');
 
 # FORM 1099 NEC
 
@@ -63,6 +70,10 @@ Route::post('/get_recipient_by_business_id','App\Http\Controllers\Form1099NecCon
 # Save Form 1099 NEC
 Route::post('/save_form_1099_nec','App\Http\Controllers\Form1099NecController@save_form_1099_nec')->middleware('jwt');
 
+# Transmit Form 1099-NEC
+Route::get('/transmit_form1099_nec','App\Http\Controllers\Form1099NecController@transmit_form1099_nec')->middleware('jwt');
+
+
 
 # FORM W2
 
@@ -78,6 +89,9 @@ Route::get('/render_template_create_form_w2','App\Http\Controllers\FormW2Control
 # Save Form W2
 Route::post('/form_w2_success','App\Http\Controllers\FormW2Controller@save_form_w2')->middleware('jwt');
 
+# Transmit Form W2
+Route::get('/transmit_form_w2','App\Http\Controllers\FormW2Controller@transmit_form_w2')->middleware('jwt');
+
 
 # FORM W9
 
@@ -86,6 +100,25 @@ Route::get('/render_template_w9','App\Http\Controllers\FormW9Controller@render_t
 
 # View the Form W9
 Route::get('/form_w9_view','App\Http\Controllers\FormW9Controller@form_w9_view')->middleware('jwt');
+
+
+# Webhook
+
+# Receive Webhook status response
+Route::post('/webhook_status','App\Http\Controllers\WebhookController@get_webhook_status');
+
+# Get recently received webhook  List
+Route::get('/webhook_responses','App\Http\Controllers\WebhookController@get_webhook_responses');
+
+
+
+
+# Receive Webhook Esign response
+Route::post('/webhook_esign_status','App\Http\Controllers\WebhookController@get_webhook_esign_status');
+
+# Get recently received webhook Esign  List
+Route::get('/webhook_esign_responses','App\Http\Controllers\WebhookController@get_webhook_esign_responses');
+
 
 
 

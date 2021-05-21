@@ -113,11 +113,11 @@ class Form1099MiscController extends Controller
                         "SecondPayeeNm"  => "",
                         "IsForeign"  => false,
                         "USAddress"  => array(
-                            "Address1"  => request('address1'),
-                            "Address2"       => request('address2'),
-                            "City"  => request('city'),
-                            "State"  => request('state_drop_down'),
-                            "ZipCd"  => request('zip_cd')
+                            "Address1"  => '1751 Kinsey Rd',
+                            "Address2"       => 'Main St',
+                            "City"  => 'Dothan',
+                            "State"  => 'AL',
+                            "ZipCd"  => '36303'
                         ),
                         "Email"  => "subbu+php@spanllc.com",
                         "Fax"  => "1234567890",
@@ -165,13 +165,53 @@ class Form1099MiscController extends Controller
     
         $response= Http::withHeaders([
             'Authorization' =>  Session::get('jwt_access_token')
-         ])->post( env('TBS_BASE_URL').'FormW2/Create', 
-           $form1099NECCreateRequest
+         ])->post( env('TBS_BASE_URL').'Form1099MISC/Create', 
+           $form1099MiscCreateRequest
         );
 
         error_log($response);
             
         return $response;
+    }
+
+    public function transmit_form1099_misc(Request $request)
+    {
+
+        $response= Http::withHeaders([
+            'Authorization' =>  Session::get('jwt_access_token')
+         ])->post( env('TBS_BASE_URL').'Form1099MISC/Transmit',[ 
+         'SubmissionId' =>$request->submissionId,
+         ]);
+
+        error_log($response);
+
+        if ($response!=null)
+        {
+            if ($response['StatusCode'] == 200){
+    
+                $responseJson='Status Timestamp=' . $response['Form1099Records']['SuccessRecords'][0]['StatusTs'];
+                $ErrorMessage='Status= ' . $response['Form1099Records']['SuccessRecords'][0]['Status'];
+                $ButtonText="Form 1099-MISC";
+                $FormType="MISC";
+
+                return view('success', ['response'=>$responseJson],['ErrorMessage'=>$ErrorMessage],['formtype'=>$FormType],['button'=>$ButtonText]);
+            }
+
+            elseif ($response['Errors'] !=null)
+            {
+    
+                 $errorList=$response['Errors'];
+                 $status=$response['StatusCode'] . " - " . $response['StatusName'] . " - " . $response['StatusMessage'];
+
+                return view('error_list',['errorList'=>$errorList],['status'=>$status]);
+            }
+            else{
+
+                $responses='StatusMessage=' . $response['StatusCode'];
+                $ErrorMessage='Message=' . $response;
+                return view('success', ['response'=>$responses],['ErrorMessage'=>$ErrorMessage]);
+            }
+        }
     }
 
     

@@ -12,8 +12,9 @@
         @endif
 
         
-        <input id="formtype" name="formtype" style="display:none;" value='Business'>
-        <button type="submit">View Business List</button>
+        <input id="formtype" name="formtype" style="display:none;" value=$formtype>
+        
+        <button type="submit">List</button>
        
     </form>
 

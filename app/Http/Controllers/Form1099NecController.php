@@ -25,7 +25,7 @@ use Session;
 
 class Form1099NecController extends Controller
 {
-   # Returns list of all the businesses
+    # Returns list of all the businesses
     public function get_all_business_list()
     {
         $businessController= new BusinessController();
@@ -39,7 +39,6 @@ class Form1099NecController extends Controller
     # Method: Form1099NEC/List (GET)
     public function get_nec_list_by_business_id($business_id)
     {
-
         $response= Http::withHeaders([
            
             'Authorization' =>  Session::get('jwt_access_token')
@@ -51,8 +50,7 @@ class Form1099NecController extends Controller
             'ToDate' => '12/31/2021',
         ]);
 
-       
-      return $response;
+        return $response;
         
     }
 
@@ -61,6 +59,10 @@ class Form1099NecController extends Controller
     {   
         return $this->get_nec_list_by_business_id($request->BusinessId);
     }
+   
+   
+
+    
 
 
    # Get Business list for form 1099-NEC
@@ -126,11 +128,11 @@ class Form1099NecController extends Controller
                         "SecondPayeeNm"  => "",
                         "IsForeign"  => false,
                         "USAddress"  => array(
-                            "Address1"  => request('address1'),
-                            "Address2"       => request('address2'),
-                            "City"  => request('city'),
-                            "State"  => request('state_drop_down'),
-                            "ZipCd"  => request('zip_cd')
+                            "Address1"  => '1751 Kinsey Rd',
+                            "Address2"       => 'Main St',
+                            "City"  => 'Dothan',
+                            "State"  => 'AL',
+                            "ZipCd"  => '36303'
                         ),
                         "Email"  => "subbu+php@spanllc.com",
                         "Fax"  => "1234567890",
@@ -175,7 +177,45 @@ class Form1099NecController extends Controller
     }
 
     
+    public function transmit_form1099_nec(Request $request)
+    {
 
+        $response= Http::withHeaders([
+            'Authorization' =>  Session::get('jwt_access_token')
+         ])->post( env('TBS_BASE_URL').'Form1099NEC/Transmit',[ 
+         'SubmissionId' =>$request->submissionId,
+         ]);
+
+        error_log($response);
+
+        if ($response!=null)
+        {
+            if ($response['StatusCode'] == 200){
+    
+                $responseJson='Status Timestamp=' . $response['Form1099Records']['SuccessRecords'][0]['StatusTs'];
+                $ErrorMessage='Status= ' . $response['Form1099Records']['SuccessRecords'][0]['Status'];
+                $ButtonText="Form 1099-MISC";
+                $FormType="MISC";
+
+                return view('success', ['response'=>$responseJson],['ErrorMessage'=>$ErrorMessage],['formtype'=>$FormType],['button'=>$ButtonText]);
+            }
+
+            elseif ($response['Errors'] !=null)
+            {
+    
+                 $errorList=$response['Errors'];
+                 $status=$response['StatusCode'] . " - " . $response['StatusName'] . " - " . $response['StatusMessage'];
+
+                return view('error_list',['errorList'=>$errorList],['status'=>$status]);
+            }
+            else{
+
+                $responses='StatusMessage=' . $response['StatusCode'];
+                $ErrorMessage='Message=' . $response;
+                return view('success', ['response'=>$responses],['ErrorMessage'=>$ErrorMessage]);
+            }
+        }
+    }
     
 
     

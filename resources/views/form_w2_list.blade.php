@@ -43,13 +43,13 @@
     function transmitClicked(submissionId)
     {
         console.log(submissionId);
-        window.location = '/transmit_form1099_misc?submissionId=' + submissionId;
+        window.location = '/transmit_form_w2?submissionId=' + submissionId;
     }
 
     function getPdfClicked(submissionId)
     {
         console.log(submissionId);
-        window.location = '/form_1099_misc/get_pdf?submissionId=' + submissionId;
+        window.location = '/form_W2/get_pdf?submissionId=' + submissionId;
     }
 
     function loadw2List()

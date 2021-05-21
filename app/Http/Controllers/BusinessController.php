@@ -30,7 +30,7 @@ class BusinessController extends Controller
 
 
     # Returns Lists every business created for a date range.
-    # Method: Business/Create (POST)
+    # Method: Business/List (POST)
     public function getBusinessList()
     {
     
@@ -43,7 +43,7 @@ class BusinessController extends Controller
                 'FromDate' => '03/01/2021',
                 'ToDate' => '12/31/2021',
             ]);
-    
+
             return $response;    
     }
 
@@ -51,6 +51,7 @@ class BusinessController extends Controller
     # Returns list of all the businesses
     public function get_all_business_list()
     {
+        
 
         return view('business_list',['businesses'=>$this->getBusinessList()['Businesses']]);
     }

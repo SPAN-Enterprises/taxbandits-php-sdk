@@ -10,6 +10,11 @@ class WebhookController extends Controller
     {  
         error_log($request);
 
+    
+        $data = json_decode($request, true);
+
+        error_log($data);
+
         $myfile = fopen("webhook_status.txt", "a") or die("Unable to open file!");
        
         fwrite($myfile, $request);
